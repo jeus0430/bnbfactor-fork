@@ -1,5 +1,5 @@
 import { ethers } from "ethers"
-import contractABI from "abis/CryptoAthletes.json"
+import contractABI from "abis/BNBFactor.json"
 import { ENVS } from "configurations/index"
 
 // Contract can be used to write Contract

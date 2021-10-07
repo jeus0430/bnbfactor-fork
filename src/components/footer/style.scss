@@ -1,0 +1,18 @@
+@import "../../styles/variables.scss";
+
+footer {
+  display: flex;
+  justify-content: center;
+  height: 112px;
+  background-color: $footer-background-color;
+  padding: 1em 0;
+
+  & > a {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    & > img {
+      height: 100%;
+    }
+  }
+}

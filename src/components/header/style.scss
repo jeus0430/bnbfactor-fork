@@ -1,0 +1,29 @@
+@import "../../styles/variables.scss";
+
+.header {
+  background-color: $black;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  & > a {
+    display: flex;
+    height: 100%;
+    align-items: center;
+
+    img {
+      height: 100%;
+      margin-right: 0.75em;
+    }
+
+    span {
+      color: $yellow-text;
+      font-size: 30px;
+      font-weight: bold;
+    }
+  }
+  span {
+    margin-left: auto;
+    margin-right: 1.5em;
+    color: $yellow-text;
+  }
+}
