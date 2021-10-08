@@ -73,7 +73,7 @@ const Dashboard = () => {
             <div className="affiliate-container-well">
               <p>Your personal link:</p>
               <div>
-                <input value="https://bnbfactor.com/?r=0x3..." />
+                <p>https://bnbfactor.com/?r=0x3...</p>
                 <button>Copy</button>
               </div>
             </div>

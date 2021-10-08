@@ -106,23 +106,31 @@
     background-color: $grey-dark-background-color;
     padding: 1rem;
     border-radius: 1rem;
+
     & p {
       font-weight: 500;
       margin-bottom: 0.75rem;
     }
     & > div {
+      position: relative;
       display: flex;
-      & input {
+      & p {
         border: none;
+        outline: none;
         border-radius: 1rem;
         width: 100%;
         padding: 1rem 3rem 1rem 1rem;
+        background-color: $white;
         font-weight: 500;
         font-size: 0.75rem;
+        user-select: none;
       }
 
       & button {
+        cursor: pointer;
         margin-left: -11%;
+        position: absolute;
+        right: 0;
         z-index: 1;
         padding: 0.75rem 1rem;
         font-size: 1rem;
