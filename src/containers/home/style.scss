@@ -1,0 +1,123 @@
+@import "../../styles/variables.scss";
+
+.up-section {
+  background-color: $grey-background-color;
+  display: flex;
+  justify-content: center;
+  padding-top: 2.5rem;
+
+  p {
+    font-weight: 600;
+  }
+
+  &-wells {
+    display: flex;
+    justify-content: center;
+
+    &-one {
+      width: 50%;
+      background-color: $white;
+      border-radius: 16px;
+      box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.08);
+      text-align: left;
+      padding: 1.25em;
+      margin: 0 1em;
+
+      &-title {
+        font-size: 24px;
+        margin-bottom: 0;
+      }
+
+      &-value {
+        font-size: 32px;
+        margin-bottom: 0;
+      }
+
+      &-help {
+        font-size: 16px;
+        margin-bottom: 0;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      flex-direction: column;
+      align-items: center;
+      &-one {
+        width: 90%;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  &-btns {
+    width: 66%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: auto;
+    padding: 1rem;
+
+    & > a {
+      display: block;
+      cursor: pointer;
+      padding: 0.75rem 1.25rem;
+      font-weight: 600;
+      margin-top: 1rem;
+      border-radius: 16px;
+      background-color: $yellow-text;
+      width: 100%;
+      color: $black;
+    }
+  }
+}
+
+.down-section {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 2rem 0;
+  &-title {
+    font-weight: 600;
+    text-align: center;
+  }
+
+  &-container {
+    display: flex;
+    padding: 0 3rem;
+    flex-direction: row;
+
+    &-item {
+      text-align: center;
+      flex-basis: 33%;
+      margin: 1rem auto 0;
+
+      &-title {
+        font-size: 1.25rem;
+        font-weight: 400;
+      }
+      img {
+        margin-bottom: 1rem;
+      }
+
+      &-text {
+        line-height: 1.1;
+        a {
+          text-decoration: underline;
+          color: $grey-text;
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 1000px) {
+    &-container {
+      flex-direction: column;
+      width: 100%;
+      margin: auto;
+    }
+  }
+}
+
+.container {
+  text-align: center;
+  width: 720px;
+}
