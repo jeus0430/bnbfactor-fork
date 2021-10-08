@@ -1,0 +1,30 @@
+@import "../../styles/variables.scss";
+
+.well {
+  background-color: $white;
+  border-radius: 16px;
+  box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  margin: 1rem;
+}
+
+.dashboard-containers {
+  display: flex;
+  flex-direction: row;
+  width: 55%;
+  margin: auto;
+}
+
+.container-one {
+  width: 66%;
+}
+.container-two {
+  width: 35%;
+}
+
+.plan-container {
+  & > h1 {
+    font-weight: 600;
+    padding: 0.625rem 1.25rem;
+  }
+}

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import Layout from "../../components/layout"
 import "./style.scss"
 import Ironclad from "../../resources/img/ironclad.svg"
@@ -32,9 +33,7 @@ const Home = () => {
             </div>
           </div>
           <div className="up-section-btns">
-            <a href="/" rel="noreferrer">
-              Dashboard
-            </a>
+            <Link to="/dashboard">Dashboard</Link>
             <a
               href="https://docs.bnbfactor.com/"
               target="_blank"

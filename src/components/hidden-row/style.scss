@@ -1,0 +1,51 @@
+@import "../../styles/variables.scss";
+
+.hidden-row {
+  background-color: $grey-dark-background-color;
+  padding: 1rem 1rem;
+
+  &-up {
+    display: flex;
+
+    & > span {
+      font-weight: 500;
+    }
+
+    & > img {
+      margin-left: auto;
+      margin-right: 5rem;
+    }
+  }
+
+  &-down {
+    display: flex;
+    justify-content: end;
+    padding: 1rem 3rem 0;
+
+    & > button {
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
+      background-color: $yellow-text;
+      border: none;
+      font-weight: 500;
+      border-radius: 1rem;
+      outline: 1px solid $yellow-text;
+    }
+
+    & > input {
+      width: 45%;
+      border: none;
+      padding: 0 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 1rem;
+      margin-right: -11%;
+      outline: none;
+
+      &:focus {
+        outline: 1px solid $yellow-text;
+        transition: none;
+      }
+    }
+  }
+}

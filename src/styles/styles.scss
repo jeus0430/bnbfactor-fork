@@ -35,7 +35,9 @@ small {
 .flex-column {
   flex-direction: column;
 }
-
+.flex-row-reverse {
+  flex-direction: row-reverse;
+}
 #root {
   width: 100%;
 }

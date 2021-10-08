@@ -1,7 +1,6 @@
 @import "../../styles/variables.scss";
 
 .up-section {
-  background-color: $grey-background-color;
   display: flex;
   justify-content: center;
   padding-top: 2.5rem;
@@ -73,6 +72,7 @@
 
 .down-section {
   display: flex;
+  background-color: $white;
   justify-content: center;
   flex-direction: column;
   padding: 2rem 0;
