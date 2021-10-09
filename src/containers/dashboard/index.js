@@ -2,11 +2,20 @@ import "./style.scss"
 import Layout from "../../components/layout"
 import CollapsibleRow from "../../components/collapsible-row"
 import HiddenRow from "components/hidden-row"
+import { connect } from "react-redux"
+import Dialog from "rc-dialog"
 
-const Dashboard = () => {
+const Dashboard = ({ modalOpen, closeModal }) => {
   const form1 = <HiddenRow />
+
   return (
     <Layout>
+      {modalOpen
+        ? "123"
+        : // <Dialog title="title" onClose={closeModal} visible>
+          //   <p> first dialog</p>
+          // </Dialog>
+          "456"}
       <div className="dashboard-containers">
         <div className="container-one">
           <div className="well plan-container">
@@ -86,4 +95,14 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+const mapStateToProps = (state) => ({
+  modalOpen: state.modalReducer.modalOpen,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  closeModal: () =>
+    dispatch({
+      type: "MODAL_CLOSE",
+    }),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
