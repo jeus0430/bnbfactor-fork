@@ -2,7 +2,6 @@ const initialState = {
   modalOpen: false,
 }
 const modalReducer = (state = initialState, action) => {
-  console.log(action)
   switch (action.type) {
     case "OPEN_MODAL":
       return {
@@ -15,7 +14,9 @@ const modalReducer = (state = initialState, action) => {
         modalOpen: false,
       }
     default:
-      return { ...state }
+      return {
+        ...state,
+      }
   }
 }
 

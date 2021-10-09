@@ -3,19 +3,55 @@ import Layout from "../../components/layout"
 import CollapsibleRow from "../../components/collapsible-row"
 import HiddenRow from "components/hidden-row"
 import { connect } from "react-redux"
-import Dialog from "rc-dialog"
+import usePortal from "react-cool-portal"
+import { useEffect } from "react"
 
 const Dashboard = ({ modalOpen, closeModal }) => {
   const form1 = <HiddenRow />
+  const { Portal, isShow, show, hide, toggle } = usePortal({
+    defaultShow: false, // The default visibility of portal, default is true
+    onHide: () => {
+      closeModal()
+    },
+  })
+
+  useEffect(() => {
+    if (modalOpen) show()
+    else hide()
+  }, [modalOpen])
 
   return (
     <Layout>
-      {modalOpen
-        ? "123"
-        : // <Dialog title="title" onClose={closeModal} visible>
-          //   <p> first dialog</p>
-          // </Dialog>
-          "456"}
+      <Portal>
+        <div className={`modal modal-open`} tabIndex={-1}>
+          <div
+            className="modal-dialog"
+            role="dialog"
+            aria-labelledby="modal-label"
+            aria-modal="true"
+          >
+            <div className="modal-header">
+              <h5 id="modal-label" className="modal-title">
+                <span role="img" aria-label="Hello">
+                  👋🏻
+                </span>{" "}
+                Hola
+              </h5>
+              <button
+                className="modal-close"
+                onClick={hide}
+                type="button"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>You can also close me by pressing the &quot;ESC&quot; key.</p>
+            </div>
+          </div>
+        </div>
+      </Portal>
       <div className="dashboard-containers">
         <div className="container-one">
           <div className="well plan-container">
@@ -102,7 +138,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   closeModal: () =>
     dispatch({
-      type: "MODAL_CLOSE",
+      type: "CLOSE_MODAL",
     }),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
