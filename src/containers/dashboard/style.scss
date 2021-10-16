@@ -1,5 +1,15 @@
 @import "../../styles/variables.scss";
 
+.modal {
+  table {
+    width: 100%;
+    td {
+      padding: 1.5rem 1rem;
+      white-space: nowrap;
+      text-align: center;
+    }
+  }
+}
 .well {
   background-color: $white;
   border-radius: 16px;
@@ -196,8 +206,10 @@
   visibility: hidden;
   opacity: 0;
   transition: 0.3s ease-in;
+  z-index: 1;
 
   .modal-dialog {
+    border-radius: 10px;
     margin: 1.75rem auto;
     width: 90%;
     max-width: 500px;
@@ -213,7 +225,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    border-bottom: 3px dashed #dee2e6;
+    border-bottom: 1px solid #dee2e6;
 
     .modal-title {
       margin: 0;

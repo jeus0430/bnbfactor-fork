@@ -1,5 +1,7 @@
 @import "../../styles/variables.scss";
-
+.calculator-img {
+  cursor: pointer;
+}
 .hidden-row {
   background-color: $grey-dark-background-color;
   padding: 1rem 1rem;

@@ -32,10 +32,7 @@ const Dashboard = ({ modalOpen, closeModal }) => {
           >
             <div className="modal-header">
               <h5 id="modal-label" className="modal-title">
-                <span role="img" aria-label="Hello">
-                  👋🏻
-                </span>{" "}
-                Hola
+                ROI
               </h5>
               <button
                 className="modal-close"
@@ -47,7 +44,42 @@ const Dashboard = ({ modalOpen, closeModal }) => {
               </button>
             </div>
             <div className="modal-body">
-              <p>You can also close me by pressing the &quot;ESC&quot; key.</p>
+              <table>
+                <thead>
+                  <tr>
+                    <td>Days</td>
+                    <td>ROI:</td>
+                    <td>Income Per 1 BNB:</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>3.5%</td>
+                    <td>0.035</td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>27.2%</td>
+                    <td>0.272</td>
+                  </tr>
+                  <tr>
+                    <td>30</td>
+                    <td>180.7%</td>
+                    <td>1.807</td>
+                  </tr>
+                  <tr>
+                    <td>90</td>
+                    <td>211.2%</td>
+                    <td>21.112</td>
+                  </tr>
+                  <tr>
+                    <td colSpan="3">
+                      Calculated based on compuouding 1x daily.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -104,7 +136,7 @@ const Dashboard = ({ modalOpen, closeModal }) => {
                 <p>$ 378.52165147</p>
               </div>
               <div className="farm-container-piece-button">
-                <button>Harvest</button>
+                <button>History</button>
               </div>
             </div>
           </div>
@@ -136,9 +168,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  closeModal: () =>
-    dispatch({
-      type: "CLOSE_MODAL",
-    }),
+  closeModal: () => dispatch({
+    type: "CLOSE_MODAL",
+  }),
+
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

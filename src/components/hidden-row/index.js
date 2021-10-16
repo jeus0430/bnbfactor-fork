@@ -12,7 +12,7 @@ const HiddenRow = ({ openModal }) => {
     <div className="hidden-row">
       <div className="hidden-row-up">
         <span>Total Earn: ∞</span>
-        <img onClick={a} src={Calculator} alt="calculator" />
+        <img class="calculator-img" onClick={a} src={Calculator} alt="calculator" />
       </div>
       <div className="hidden-row-down">
         <input placeholder="Enter BNB amount" />
