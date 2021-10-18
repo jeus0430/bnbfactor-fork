@@ -161,7 +161,7 @@ const Dashboard = ({ modalOpen, closeModal }) => {
             <div className="affiliate-container-well">
               <p>Your personal link:</p>
               <div>
-                <p>https://bnbfactor.com/?r= {addr}</p>
+                <p>https://bnbfactor.com/?r= {addr.slice(0, 4) + '...'}</p>
                 <CopyToClipboard text={addr} onCopy={() => setCopied(true)}>
                   <button data-tip={copied ? "copied" : "copy"} title={copied ? "Copied" : "Copy"}>Copy</button>
                 </CopyToClipboard>
