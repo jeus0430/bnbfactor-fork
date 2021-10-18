@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { connectWallet } from "helpers/wallet"
 import Home from "containers/home"
 import Dashboard from "containers/dashboard"
 import { Provider } from "react-redux"
 import store from "./store"
 
-const AppRouter = () => (
-  <Provider store={store}>
+const AppRouter = () => {
+  connectWallet()
+  return <Provider store={store}>
     <Router>
       <Switch>
         <Route exact path="/" component={Home} />
@@ -13,6 +15,6 @@ const AppRouter = () => (
       </Switch>
     </Router>
   </Provider>
-)
+}
 
 export default AppRouter

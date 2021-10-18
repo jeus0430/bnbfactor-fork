@@ -1,5 +1,5 @@
 import detectEthereumProvider from "@metamask/detect-provider"
-import { ENVS } from "configurations/index"
+require("dotenv").config()
 
 export const connectWallet = async () => {
   const provider = await detectEthereumProvider()
@@ -10,7 +10,7 @@ export const connectWallet = async () => {
         method: "eth_chainId",
       })
 
-      if (parseInt(walletChainId) === parseInt(ENVS.CHAIN_ID)) {
+      if (parseInt(walletChainId) === parseInt(process.env.REACT_APP_CHAIN_ID)) {
         const addressArray = await provider.request({
           method: "eth_requestAccounts",
         })
@@ -29,7 +29,7 @@ export const connectWallet = async () => {
       } else {
         provider.request({
           method: "wallet_switchEthereumChain",
-          params: [{ chainId: ENVS.CHAIN_ID }],
+          params: [{ chainId: process.env.REACT_APP_CHAIN_ID }],
         })
 
         return {
@@ -64,7 +64,7 @@ export const getCurrentWalletConnected = async () => {
       const walletChainId = await provider.request({
         method: "eth_chainId",
       })
-      if (addressArray.length && walletChainId === ENVS.CHAIN_ID) {
+      if (addressArray.length && walletChainId.toUpperCase() === process.env.REACT_APP_CHAIN_ID.toUpperCase()) {
         return {
           address: addressArray[0],
           status: "Get your CryptoAthletes pack, 0.05ETH",

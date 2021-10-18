@@ -1,8 +1,8 @@
 import "./style.scss"
 import Layout from "../../components/layout"
 import CollapsibleRow from "../../components/collapsible-row"
-import HiddenRow from "components/hidden-row"
 import { connect } from "react-redux"
+import { getCurrentWalletConnected } from "helpers/wallet"
 import usePortal from "react-cool-portal"
 import { useEffect, useState } from "react"
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -16,6 +16,11 @@ const Dashboard = ({ modalOpen, closeModal }) => {
       closeModal()
     },
   })
+
+  const [addr, setAddr] = useState("")
+  getCurrentWalletConnected().then(
+    (value) => setAddr(value['address'])
+  )
 
   useEffect(() => {
     if (modalOpen) show()
@@ -156,8 +161,8 @@ const Dashboard = ({ modalOpen, closeModal }) => {
             <div className="affiliate-container-well">
               <p>Your personal link:</p>
               <div>
-                <p>https://bnbfactor.com/?r=0x3...</p>
-                <CopyToClipboard text="0x35a2333333333333333333333333332" onCopy={() => setCopied(true)}>
+                <p>https://bnbfactor.com/?r= {addr}</p>
+                <CopyToClipboard text={addr} onCopy={() => setCopied(true)}>
                   <button data-tip={copied ? "copied" : "copy"} title={copied ? "Copied" : "Copy"}>Copy</button>
                 </CopyToClipboard>
               </div>
