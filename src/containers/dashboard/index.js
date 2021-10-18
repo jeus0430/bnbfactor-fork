@@ -8,7 +8,7 @@ import { useEffect } from "react"
 
 const Dashboard = ({ modalOpen, closeModal }) => {
   const form1 = <HiddenRow />
-  const { Portal, isShow, show, hide, toggle } = usePortal({
+  const { Portal, show, hide } = usePortal({
     defaultShow: false, // The default visibility of portal, default is true
     onHide: () => {
       closeModal()
@@ -88,6 +88,10 @@ const Dashboard = ({ modalOpen, closeModal }) => {
         <div className="container-one">
           <div className="well plan-container">
             <h1>Stake BNB</h1>
+            <CollapsibleRow
+              contents={["Dasy", "%Daily", "Total"]}
+              hiddenElem={null}
+            />
             <CollapsibleRow
               contents={["Forever", "2%", "∞"]}
               hiddenElem={form1}

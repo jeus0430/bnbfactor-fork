@@ -3,7 +3,7 @@ import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
 
-const CollapsibleRow = ({ contents, hiddenElem, modalElem }) => {
+const CollapsibleRow = ({ contents, hiddenElem }) => {
   const [collapsed, setCollapsed] = useState(false)
 
   const toggleCollapsed = () => {
@@ -12,16 +12,17 @@ const CollapsibleRow = ({ contents, hiddenElem, modalElem }) => {
 
   return (
     <>
-      <div className="collapsible-row" onClick={toggleCollapsed}>
+      <div className="collapsible-row { hiddenElem ? '' : 'not-foldable' }" onClick={toggleCollapsed}>
         <div>{contents[0]}</div>
         <div>{contents[1]}</div>
         <div>{contents[2]}</div>
         <div>
-          {collapsed ? (
-            <FontAwesomeIcon icon={faChevronUp} />
-          ) : (
-            <FontAwesomeIcon icon={faChevronDown} />
-          )}
+          {hiddenElem ? (
+            collapsed ? (
+              <FontAwesomeIcon icon={faChevronUp} />
+            ) : (
+              <FontAwesomeIcon icon={faChevronDown} />
+            )) : ""}
         </div>
       </div>
       {collapsed ? hiddenElem : ""}
