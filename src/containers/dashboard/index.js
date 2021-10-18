@@ -4,10 +4,13 @@ import CollapsibleRow from "../../components/collapsible-row"
 import HiddenRow from "components/hidden-row"
 import { connect } from "react-redux"
 import usePortal from "react-cool-portal"
-import { useEffect } from "react"
-
+import { useEffect, useState } from "react"
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import ReactTooltip from 'react-tooltip'
 const Dashboard = ({ modalOpen, closeModal }) => {
   const form1 = <HiddenRow />
+  const [copied, setCopied] = useState(false)
+
   const { Portal, show, hide } = usePortal({
     defaultShow: false, // The default visibility of portal, default is true
     onHide: () => {
@@ -155,7 +158,9 @@ const Dashboard = ({ modalOpen, closeModal }) => {
               <p>Your personal link:</p>
               <div>
                 <p>https://bnbfactor.com/?r=0x3...</p>
-                <button>Copy</button>
+                <CopyToClipboard text="0x35a2333333333333333333333333332" onCopy={() => setCopied(true)}>
+                  <button data-tip={copied ? "copied" : "copy"} title={copied ? "Copied" : "Copy"}>Copy</button>
+                </CopyToClipboard>
               </div>
             </div>
             <p style={{ marginBottom: "1rem" }}>Invited users: 0</p>

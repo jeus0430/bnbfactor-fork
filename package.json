@@ -14,11 +14,13 @@
     "rc-dialog": "^8.6.0",
     "react": "^17.0.2",
     "react-cool-portal": "^1.1.1",
+    "react-copy-to-clipboard": "^5.0.4",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "react-scroll": "^1.8.4",
+    "react-tooltip": "^4.2.21",
     "truffle-plugin-verify": "^0.5.15",
     "web3": "^1.6.0"
   },
