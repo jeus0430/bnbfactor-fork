@@ -6,7 +6,7 @@ import { connect } from "react-redux"
 import usePortal from "react-cool-portal"
 import { useEffect, useState } from "react"
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import ReactTooltip from 'react-tooltip'
+
 const Dashboard = ({ modalOpen, closeModal }) => {
   const form1 = <HiddenRow />
   const [copied, setCopied] = useState(false)
@@ -129,7 +129,7 @@ const Dashboard = ({ modalOpen, closeModal }) => {
             <div className="farm-container-piece">
               <div className="farm-container-piece-text">
                 <p>BNB to Harvest:</p>
-                <p>0.00000000 BNB</p>
+                <p className="bold">0.00000000 BNB</p>
                 <p>$ 0.00000000</p>
               </div>
               <div className="farm-container-piece-button">
@@ -139,7 +139,7 @@ const Dashboard = ({ modalOpen, closeModal }) => {
             <div className="farm-container-piece">
               <div className="farm-container-piece-text">
                 <p>BNB in wallet:</p>
-                <p>0.89722587 BNB</p>
+                <p className="bold">0.89722587 BNB</p>
                 <p>$ 378.52165147</p>
               </div>
               <div className="farm-container-piece-button">
