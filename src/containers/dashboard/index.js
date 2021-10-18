@@ -8,7 +8,6 @@ import { useEffect, useState } from "react"
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 const Dashboard = ({ modalOpen, closeModal }) => {
-  const form1 = <HiddenRow />
   const [copied, setCopied] = useState(false)
 
   const { Portal, show, hide } = usePortal({
@@ -93,23 +92,23 @@ const Dashboard = ({ modalOpen, closeModal }) => {
             <h1>Stake BNB</h1>
             <CollapsibleRow
               contents={["Dasy", "%Daily", "Total"]}
-              hiddenElem={null}
+              daily="0"
             />
             <CollapsibleRow
               contents={["Forever", "2%", "∞"]}
-              hiddenElem={form1}
+              daily="2"
             />
             <CollapsibleRow
               contents={["40", "4%", "160%"]}
-              hiddenElem={form1}
+              daily="4"
             />
             <CollapsibleRow
               contents={["60", "3.5%", "210%"]}
-              hiddenElem={form1}
+              daily="3.5"
             />
             <CollapsibleRow
               contents={["90", "3%", "270%"]}
-              hiddenElem={form1}
+              daily="3"
             />
           </div>
           <div className="well help-container">
