@@ -96,7 +96,7 @@ const Dashboard = ({ modalOpen, closeModal }) => {
           <div className="well plan-container">
             <h1>Stake BNB</h1>
             <CollapsibleRow
-              contents={["Dasy", "%Daily", "Total"]}
+              contents={["Days", "%Daily", "Total"]}
               daily="0"
             />
             <CollapsibleRow

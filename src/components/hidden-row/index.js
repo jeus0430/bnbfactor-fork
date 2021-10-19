@@ -1,36 +1,51 @@
 import { useState } from "react"
+import { ethers } from "ethers"
 import "./style.scss"
 import Calculator from "../../resources/img/calculator.svg"
 import { connect } from "react-redux"
-import { getContractWithSigner } from "helpers/interact"
+import { getContractWithSigner } from "helpers/contract"
+require('dotenv').config()
 
 const HiddenRow = ({ openModal, daily }) => {
   const [earn, setEarn] = useState(daily > 2 ? "0BNB" : "∞")
+  const [amount, setAmount] = useState("0")
   const calcEarn = (amount) => {
-    if (daily > 2)
-      return parseFloat(amount) * daily / 100 + "BNB"
-    else
-      return "∞"
+    switch (parseFloat(daily)) {
+      case 2:
+        return "∞"
+      case 4:
+        return parseFloat(amount) * daily * 40 / 100 + "BNB"
+      case 3.5:
+        return parseFloat(amount) * daily * 60 / 100 + "BNB"
+      case 3:
+        return parseFloat(amount) * daily * 90 / 100 + "BNB"
+    }
   }
   const a = () => {
     openModal()
   }
+  const handleChange = (ev) => {
+    setAmount(ev.target.value)
+    setEarn(calcEarn(parseFloat(ev.target.value)))
+  }
+
   const plan = () => {
-    switch (daily) {
-      case 20:
+    switch (parseFloat(daily)) {
+      case 2:
         return 0;
-      case 40:
+      case 4:
         return 1;
-      case 35:
+      case 3.5:
         return 2;
-      case 30:
+      case 3:
         return 3;
     }
   };
 
   const contract = getContractWithSigner()
-  const handleStake = () => {
-    await contract.invest(0x0000000000000000000000000000000000000000, plan(), { gasLimit: 200000000000, value: ethers.utils.parseEther(parseFloat(amount)) });
+  const handleStake = async () => {
+    await contract.invest("0x0000000000000000000000000000000000000000", plan(), { gasLimit: 230000, gasPrice: ethers.utils.parseUnits('9.0', 'gwei'), value: ethers.utils.parseEther(amount) });
+    // await contract.invest(0x0000000000000000000000000000000000000011, plan());
   }
 
   return (
@@ -40,7 +55,7 @@ const HiddenRow = ({ openModal, daily }) => {
         <img className="calculator-img" onClick={a} src={Calculator} alt="calculator" />
       </div>
       <div className="hidden-row-down">
-        <input type="number" defaultValue="0" onChange={ev => setEarn(calcEarn(ev.target.value))} placeholder="Enter BNB amount" />
+        <input type="number" value={amount} onChange={handleChange} placeholder="Enter BNB amount" />
         <button onClick={handleStake}>Stake</button>
       </div>
     </div>

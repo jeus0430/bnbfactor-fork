@@ -1,18 +1,16 @@
 import { ethers } from "ethers"
 import contractABI from "abis/BNBFactor.json"
-import { ENVS } from "configurations/index"
+require("dotenv").config()
 
 // Contract can be used to write Contract
 export const getContractWithSigner = () => {
   const infuraProvider = new ethers.providers.Web3Provider(window.ethereum)
   const signer = infuraProvider.getSigner()
-
   const contract = new ethers.Contract(
-    ENVS.CONTRACT_ADDRESS,
+    process.env.REACT_APP_CONTRACT_ADDRESS,
     contractABI.abi,
     signer
   )
-
   return contract
 }
 
@@ -21,7 +19,7 @@ const getContractWithoutSigner = () => {
   const infuraProvider = new ethers.providers.Web3Provider(window.ethereum)
 
   const contract = new ethers.Contract(
-    ENVS.CONTRACT_ADDRESS,
+    process.env.CONTRACT_ADDRESS,
     contractABI.abi,
     infuraProvider
   )
