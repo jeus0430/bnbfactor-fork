@@ -4,8 +4,20 @@ import "./style.scss"
 import Ironclad from "../../resources/img/ironclad.svg"
 import Higharp from "../../resources/img/high-arp.svg"
 import Customersupport from "../../resources/img/customer-support.svg"
+import { useEffect } from "react"
 
 const Home = () => {
+
+  useEffect(() => {
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var c = url.searchParams.get("r");
+    if (!window.sessionStorage.getItem("bnb-factor-referral") && c) {
+      window.sessionStorage.setItem("bnb-factor-referral", c)
+    }
+    console.log(c);
+  }, [])
+
   return (
     <Layout>
       <section className="up-section">

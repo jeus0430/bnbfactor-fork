@@ -2,6 +2,9 @@ import { ethers } from "ethers"
 import contractABI from "abis/BNBFactor.json"
 require("dotenv").config()
 
+export const getTheSigner = () => {
+  return new ethers.providers.Web3Provider(window.ethereum)
+}
 // Contract can be used to write Contract
 export const getContractWithSigner = () => {
   const infuraProvider = new ethers.providers.Web3Provider(window.ethereum)

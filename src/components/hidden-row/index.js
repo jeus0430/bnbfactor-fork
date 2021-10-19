@@ -3,13 +3,17 @@ import { ethers } from "ethers"
 import "./style.scss"
 import Calculator from "../../resources/img/calculator.svg"
 import { connect } from "react-redux"
-import { getContractWithSigner } from "helpers/contract"
+import { getTheSigner, getContractWithSigner } from "helpers/contract"
+import { getCurrentWalletConnected } from "helpers/wallet"
 require('dotenv').config()
 
 const HiddenRow = ({ openModal, daily }) => {
   const [earn, setEarn] = useState(daily > 2 ? "0BNB" : "∞")
   const [amount, setAmount] = useState("0")
+  const [addr, setAddr] = useState()
   const calcEarn = (amount) => {
+    if (isNaN(parseFloat(amount)))
+      return "0BNB"
     switch (parseFloat(daily)) {
       case 2:
         return "∞"
@@ -41,11 +45,15 @@ const HiddenRow = ({ openModal, daily }) => {
         return 3;
     }
   };
-
   const contract = getContractWithSigner()
+  const signer = getTheSigner()
   const handleStake = async () => {
-    await contract.invest("0x0000000000000000000000000000000000000000", plan(), { gasLimit: 230000, gasPrice: ethers.utils.parseUnits('9.0', 'gwei'), value: ethers.utils.parseEther(amount) });
-    // await contract.invest(0x0000000000000000000000000000000000000011, plan());
+    setAddr(await getCurrentWalletConnected()['address'])
+    const c = sessionStorage.getItem('bnb-factor-referral')
+    let referral = "0x0000000000000000000000000000000000000000"
+    if (/0x[a-fA-F0-9]{40}/.test(c))
+      referral = c
+    await contract.invest(referral, plan(), { from: addr, gasLimit: 4000000, gasPrice: 40000000000, value: ethers.utils.parseEther(amount) });
   }
 
   return (
