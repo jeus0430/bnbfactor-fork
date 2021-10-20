@@ -1,15 +1,20 @@
 import "./style.scss"
 import Layout from "../../components/layout"
 import CollapsibleRow from "../../components/collapsible-row"
-import { connect } from "react-redux"
+import { connect, useStore } from "react-redux"
 import { getCurrentWalletConnected } from "helpers/wallet"
 import usePortal from "react-cool-portal"
 import { useEffect, useState } from "react"
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { getContractWithSigner } from "helpers/contract"
+import axios from "axios"
 
 const Dashboard = ({ modalOpen, closeModal }) => {
   const [copied, setCopied] = useState(false)
-
+  const [ava, setAva] = useState(0)
+  const [curren, setCurren] = useState(0)
+  const [addr, setAddr] = useState("")
+  const contract = getContractWithSigner()
   const { Portal, show, hide } = usePortal({
     defaultShow: false, // The default visibility of portal, default is true
     onHide: () => {
@@ -17,10 +22,23 @@ const Dashboard = ({ modalOpen, closeModal }) => {
     },
   })
 
-  const [addr, setAddr] = useState("")
-  getCurrentWalletConnected().then(
-    (value) => setAddr(value['address'])
-  )
+
+  useEffect(async () => {
+    setCurren((await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd'))['data']['binancecoin']['usd'])
+    const address = await getCurrentWalletConnected()
+    setAddr(address['address'])
+    if (addr) {
+      const av = await contract.getUserAvailable(addr)
+      setAva(parseFloat(av.toString()) / Math.pow(10, 18))
+    }
+  })
+
+  const doHarvest = async () => {
+    await contract.withdraw({
+      from: addr, gasLimit: 4000000, gasPrice: 40000000000
+    })
+    console.log('withdrawn');
+  }
 
   useEffect(() => {
     if (modalOpen) show()
@@ -133,11 +151,11 @@ const Dashboard = ({ modalOpen, closeModal }) => {
             <div className="farm-container-piece">
               <div className="farm-container-piece-text">
                 <p>BNB to Harvest:</p>
-                <p className="bold">0.00000000 BNB</p>
-                <p>$ 0.00000000</p>
+                <p className="bold">{ava.toFixed(8)} BNB</p>
+                <p>$ {(ava * curren).toFixed(8)}</p>
               </div>
               <div className="farm-container-piece-button">
-                <button>Harvest</button>
+                <button disabled={!ava} onClick={doHarvest}>Harvest</button>
               </div>
             </div>
             <div className="farm-container-piece">

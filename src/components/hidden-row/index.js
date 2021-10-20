@@ -46,7 +46,6 @@ const HiddenRow = ({ openModal, daily }) => {
     }
   };
   const contract = getContractWithSigner()
-  const signer = getTheSigner()
   const handleStake = async () => {
     setAddr(await getCurrentWalletConnected()['address'])
     const c = sessionStorage.getItem('bnb-factor-referral')
