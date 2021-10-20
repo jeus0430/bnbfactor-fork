@@ -18,11 +18,11 @@ export const getContractWithSigner = () => {
 }
 
 // Contract can be used to read Contract
-const getContractWithoutSigner = () => {
+export const getContractWithoutSigner = () => {
   const infuraProvider = new ethers.providers.Web3Provider(window.ethereum)
 
   const contract = new ethers.Contract(
-    process.env.CONTRACT_ADDRESS,
+    process.env.REACT_APP_CONTRACT_ADDRESS,
     contractABI.abi,
     infuraProvider
   )

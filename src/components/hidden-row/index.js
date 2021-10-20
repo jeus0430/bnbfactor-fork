@@ -18,11 +18,11 @@ const HiddenRow = ({ openModal, daily }) => {
       case 2:
         return "∞"
       case 4:
-        return parseFloat(amount) * daily * 40 / 100 + "BNB"
+        return (parseFloat(amount) * daily * 40 / 100).toFixed(3) + "BNB"
       case 3.5:
-        return parseFloat(amount) * daily * 60 / 100 + "BNB"
+        return (parseFloat(amount) * daily * 60 / 100).toFixed(3) + "BNB"
       case 3:
-        return parseFloat(amount) * daily * 90 / 100 + "BNB"
+        return (parseFloat(amount) * daily * 90 / 100).toFixed(3) + "BNB"
     }
   }
   const a = () => {

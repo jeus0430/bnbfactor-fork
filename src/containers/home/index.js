@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import Layout from "../../components/layout"
 import "./style.scss"
@@ -5,17 +6,24 @@ import Ironclad from "../../resources/img/ironclad.svg"
 import Higharp from "../../resources/img/high-arp.svg"
 import Customersupport from "../../resources/img/customer-support.svg"
 import { useEffect } from "react"
+import { getContractWithoutSigner } from "helpers/contract"
+import axios from "axios"
 
 const Home = () => {
 
-  useEffect(() => {
+  const [deposited, setDeposited] = useState(0)
+  const [curren, setCurren] = useState(0)
+
+  useEffect(async () => {
+    const contract = getContractWithoutSigner();
+    setDeposited((await contract.totalInvested()).toString() / Math.pow(10, 18))
+    setCurren((await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd'))['data']['binancecoin']['usd'])
     var url_string = window.location.href;
     var url = new URL(url_string);
     var c = url.searchParams.get("r");
     if (!window.sessionStorage.getItem("bnb-factor-referral") && c) {
       window.sessionStorage.setItem("bnb-factor-referral", c)
     }
-    console.log(c);
   }, [])
 
   return (
@@ -33,15 +41,15 @@ const Home = () => {
               <p className="up-section-wells-one-title">
                 Total Value Deposited
               </p>
-              <p className="up-section-wells-one-value">5302.721 BNB</p>
-              <p className="up-section-wells-one-help">$ 2362203.08</p>
+              <p className="up-section-wells-one-value">{deposited.toFixed(3)}BNB</p>
+              <p className="up-section-wells-one-help">$ {deposited * curren}</p>
             </div>
             <div className="up-section-wells-one">
               <p className="up-section-wells-one-title">
                 Total Referral Earnings
               </p>
-              <p className="up-section-wells-one-value">689.354 BNB</p>
-              <p className="up-section-wells-one-help">$ 307086.40</p>
+              <p className="up-section-wells-one-value">{(deposited * 0.13).toFixed(3)} BNB</p>
+              <p className="up-section-wells-one-help">$ {(deposited * 0.13 * curren).toFixed(3)}</p>
             </div>
           </div>
           <div className="up-section-btns">
