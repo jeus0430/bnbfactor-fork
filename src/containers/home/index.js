@@ -13,7 +13,6 @@ const Home = () => {
 
   const [deposited, setDeposited] = useState(0)
   const [curren, setCurren] = useState(0)
-
   useEffect(async () => {
     const contract = getContractWithoutSigner();
     setDeposited((await contract.totalInvested()).toString() / Math.pow(10, 18))

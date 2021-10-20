@@ -11,6 +11,7 @@
     "@truffle/hdwallet-provider": "^1.5.0",
     "axios": "^0.23.0",
     "dotenv": "^10.0.0",
+    "eth-balance": "0.0.5",
     "ethers": "^5.4.7",
     "node-sass": "^6.0.1",
     "rc-dialog": "^8.6.0",

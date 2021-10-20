@@ -1,7 +1,7 @@
 import "./style.scss"
 import Layout from "../../components/layout"
 import CollapsibleRow from "../../components/collapsible-row"
-import { connect, useStore } from "react-redux"
+import { connect } from "react-redux"
 import { getCurrentWalletConnected } from "helpers/wallet"
 import usePortal from "react-cool-portal"
 import { useEffect, useState } from "react"
@@ -9,11 +9,16 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { getContractWithSigner } from "helpers/contract"
 import axios from "axios"
 
+const Web3 = require('web3');
+require("dotenv").config()
+
 const Dashboard = ({ modalOpen, closeModal }) => {
   const [copied, setCopied] = useState(false)
   const [ava, setAva] = useState(0)
   const [curren, setCurren] = useState(0)
   const [addr, setAddr] = useState("")
+  const [balan, setBalan] = useState(0)
+
   const contract = getContractWithSigner()
   const { Portal, show, hide } = usePortal({
     defaultShow: false, // The default visibility of portal, default is true
@@ -27,11 +32,15 @@ const Dashboard = ({ modalOpen, closeModal }) => {
     setCurren((await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd'))['data']['binancecoin']['usd'])
     const address = await getCurrentWalletConnected()
     setAddr(address['address'])
-    if (addr) {
-      const av = await contract.getUserAvailable(addr)
+    console.log();
+    var web3 = new Web3(window.ethereum);
+    if (address['address']) {
+      const bal = await web3.eth.getBalance(address['address'])
+      setBalan(web3.utils.fromWei(bal))
+      const av = await contract.getUserAvailable(address['address'])
       setAva(parseFloat(av.toString()) / Math.pow(10, 18))
     }
-  })
+  }, [])
 
   const doHarvest = async () => {
     await contract.withdraw({
@@ -161,8 +170,8 @@ const Dashboard = ({ modalOpen, closeModal }) => {
             <div className="farm-container-piece">
               <div className="farm-container-piece-text">
                 <p>BNB in wallet:</p>
-                <p className="bold">0.89722587 BNB</p>
-                <p>$ 378.52165147</p>
+                <p className="bold">{parseFloat(balan).toFixed(8)} BNB</p>
+                <p>$ {(parseFloat(balan) * curren).toFixed(8)}</p>
               </div>
               <div className="farm-container-piece-button">
                 <button>History</button>
