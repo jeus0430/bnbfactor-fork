@@ -1,7 +1,7 @@
 require("dotenv").config()
 
-const { COMMISSIONWALLET_ADDRESS } = process.env
+const { COMMISSION_WALLET_ADDRESS } = process.env
 const BNBFactor = artifacts.require("BNBFactor")
 module.exports = async function (deployer) {
-  await deployer.deploy(BNBFactor, COMMISSIONWALLET_ADDRESS)
+  await deployer.deploy(BNBFactor, COMMISSION_WALLET_ADDRESS)
 }
