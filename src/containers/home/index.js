@@ -2,12 +2,12 @@ import { useState } from "react"
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom"
 import Layout from "../../components/layout"
-import "./style.scss"
 import Ironclad from "../../resources/img/ironclad.svg"
 import Higharp from "../../resources/img/high-arp.svg"
 import Customersupport from "../../resources/img/customer-support.svg"
 import { useEffect } from "react"
 import { getContractWithoutSigner } from "helpers/contract"
+import "./style.scss"
 import axios from "axios"
 import { changeWalletAction } from "reducers/actions"
 

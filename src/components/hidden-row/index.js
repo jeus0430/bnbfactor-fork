@@ -3,7 +3,7 @@ import { ethers } from "ethers"
 import "./style.scss"
 import Calculator from "../../resources/img/calculator.svg"
 import { connect } from "react-redux"
-import { getTheSigner, getContractWithSigner } from "helpers/contract"
+import { getContractWithSigner } from "helpers/contract"
 import { getCurrentWalletConnected } from "helpers/wallet"
 require('dotenv').config()
 
