@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { connect } from 'react-redux';
 import { Link } from "react-router-dom"
 import Layout from "../../components/layout"
 import "./style.scss"
@@ -8,11 +9,12 @@ import Customersupport from "../../resources/img/customer-support.svg"
 import { useEffect } from "react"
 import { getContractWithoutSigner } from "helpers/contract"
 import axios from "axios"
+import { changeWalletAction } from "reducers/actions"
 
-const Home = () => {
-
+const Home = ({ walletAddress }) => {
   const [deposited, setDeposited] = useState(0)
   const [curren, setCurren] = useState(0)
+
   useEffect(async () => {
     const contract = getContractWithoutSigner();
     setDeposited((await contract.totalInvested()).toString() / Math.pow(10, 18))
@@ -23,7 +25,28 @@ const Home = () => {
     if (!window.sessionStorage.getItem("bnb-factor-referral") && c) {
       window.sessionStorage.setItem("bnb-factor-referral", c)
     }
-  }, [])
+  }, [walletAddress])
+
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.enable();
+
+      window.ethereum.on('accountsChanged', function (accounts) {
+        console.log('accountsChanges', accounts);
+      });
+
+      window.ethereum.on('networkChanged', function (networkId) {
+        console.log('networkChanged', networkId);
+      });
+
+      return () => {
+        // Remove event handlers attacted to window.ethereum
+        window.ethereum.removeAllListeners(['accountChanged', 'networkChanged'])
+      }
+    } else {
+      console.log('No Web3 Detected')
+    }
+  }, [window.ethereum])
 
   return (
     <Layout>
@@ -139,4 +162,18 @@ const Home = () => {
   )
 }
 
-export default Home
+const mapStateToProps = (state) => {
+  return {
+    walletAddress: state.walletAddress
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeWallet: (address) => {
+      dispatch(changeWalletAction(address))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
