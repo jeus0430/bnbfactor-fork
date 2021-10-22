@@ -23,6 +23,8 @@ const HiddenRow = ({ openModal, daily }) => {
         return (parseFloat(amount) * daily * 60 / 100).toFixed(3) + "BNB"
       case 3:
         return (parseFloat(amount) * daily * 90 / 100).toFixed(3) + "BNB"
+      default:
+        return "0BNB"
     }
   }
   const a = () => {
@@ -43,6 +45,8 @@ const HiddenRow = ({ openModal, daily }) => {
         return 2;
       case 3:
         return 3;
+      default:
+        return 0;
     }
   };
   const contract = getContractWithSigner()

@@ -18,3 +18,8 @@ export function changeCurrency(val) {
     currency: val
   }
 }
+export function closeModal() {
+  return {
+    type: "CLOSE_MODAL"
+  }
+}

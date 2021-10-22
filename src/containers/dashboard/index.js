@@ -2,24 +2,24 @@ import "./style.scss"
 import Layout from "../../components/layout"
 import CollapsibleRow from "../../components/collapsible-row"
 import { connect } from "react-redux"
-import { getCurrentWalletConnected } from "helpers/wallet"
 import usePortal from "react-cool-portal"
 import { useEffect, useState } from "react"
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { getContractWithSigner } from "helpers/contract"
-import axios from "axios"
-
+import { closeModal } from "reducers/actions"
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 const Web3 = require('web3');
 require("dotenv").config()
 
-const Dashboard = ({ modalOpen, closeModal }) => {
+const Dashboard = ({ walletAddress, currency, modalOpen, closeModal }) => {
   const [copied, setCopied] = useState(false)
   const [ava, setAva] = useState(0)
-  const [curren, setCurren] = useState(0)
-  const [addr, setAddr] = useState("")
   const [balan, setBalan] = useState(0)
 
+  var web3 = new Web3(window.ethereum);
   const contract = getContractWithSigner()
+
   const { Portal, show, hide } = usePortal({
     defaultShow: false, // The default visibility of portal, default is true
     onHide: () => {
@@ -27,32 +27,50 @@ const Dashboard = ({ modalOpen, closeModal }) => {
     },
   })
 
+  const updateBalance = (walletAddress) => {
+    web3.eth.getBalance(walletAddress).then(
+      (val) => {
+        setBalan(web3.utils.fromWei(val))
+      }
+    )
+  }
 
-  useEffect(async () => {
-    setCurren((await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd'))['data']['binancecoin']['usd'])
-    const address = await getCurrentWalletConnected()
-    setAddr(address['address'])
-    console.log();
-    var web3 = new Web3(window.ethereum);
-    if (address['address']) {
-      const bal = await web3.eth.getBalance(address['address'])
-      setBalan(web3.utils.fromWei(bal))
-      const av = await contract.getUserAvailable(address['address'])
-      setAva(parseFloat(av.toString()) / Math.pow(10, 18))
+  const updateAvailable = (walletAddress) => {
+    contract.getUserAvailable(walletAddress).then(
+      (val) => {
+        setAva(parseFloat(val.toString()) / Math.pow(10, 18))
+      }
+    )
+  }
+
+  useEffect(() => {
+    if (walletAddress) {
+      updateBalance(walletAddress)
+      updateAvailable(walletAddress)
     }
-  }, [])
+  }, [walletAddress])
 
   const doHarvest = async () => {
-    await contract.withdraw({
-      from: addr, gasLimit: 4000000, gasPrice: 40000000000
-    })
-    console.log('withdrawn');
+    contract.withdraw({
+      from: walletAddress,
+      gasLimit: 4000000,
+      gasPrice: 40000000000
+    }).then(
+      () => {
+        NotificationManager.success('Withdraw success')
+        updateBalance(walletAddress)
+        updateAvailable(walletAddress)
+      },
+      () => {
+        NotificationManager.error('Withdraw failed')
+      }
+    )
   }
 
   useEffect(() => {
     if (modalOpen) show()
     else hide()
-  }, [modalOpen])
+  }, [modalOpen, hide, show])
 
   return (
     <Layout>
@@ -161,7 +179,7 @@ const Dashboard = ({ modalOpen, closeModal }) => {
               <div className="farm-container-piece-text">
                 <p>BNB to Harvest:</p>
                 <p className="bold">{ava.toFixed(8)} BNB</p>
-                <p>$ {(ava * curren).toFixed(8)}</p>
+                <p>$ {(ava * currency).toFixed(8)}</p>
               </div>
               <div className="farm-container-piece-button">
                 <button disabled={!ava} onClick={doHarvest}>Harvest</button>
@@ -171,7 +189,7 @@ const Dashboard = ({ modalOpen, closeModal }) => {
               <div className="farm-container-piece-text">
                 <p>BNB in wallet:</p>
                 <p className="bold">{parseFloat(balan).toFixed(8)} BNB</p>
-                <p>$ {(parseFloat(balan) * curren).toFixed(8)}</p>
+                <p>$ {(parseFloat(balan) * currency).toFixed(8)}</p>
               </div>
               <div className="farm-container-piece-button">
                 <button>History</button>
@@ -188,8 +206,8 @@ const Dashboard = ({ modalOpen, closeModal }) => {
             <div className="affiliate-container-well">
               <p>Your personal link:</p>
               <div>
-                <p>https://bnbfactor.com/?r= {addr.slice(0, 4) + '...'}</p>
-                <CopyToClipboard text={addr} onCopy={() => setCopied(true)}>
+                <p>https://bnbfactor.com/?r= {walletAddress.slice(0, 4) + '...'}</p>
+                <CopyToClipboard text={"http://localhost:3000?r=" + walletAddress} onCopy={() => setCopied(true)}>
                   <button data-tip={copied ? "copied" : "copy"} title={copied ? "Copied" : "Copy"}>Copy</button>
                 </CopyToClipboard>
               </div>
@@ -199,18 +217,19 @@ const Dashboard = ({ modalOpen, closeModal }) => {
           </div>
         </div>
       </div>
+      <NotificationContainer />
     </Layout>
   )
 }
 
 const mapStateToProps = (state) => ({
-  modalOpen: state.modalReducer.modalOpen,
+  modalOpen: state.modalOpen,
+  currency: state.currency,
+  walletAddress: state.walletAddress
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  closeModal: () => dispatch({
-    type: "CLOSE_MODAL",
-  }),
+  closeModal: () => dispatch(closeModal()),
 
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

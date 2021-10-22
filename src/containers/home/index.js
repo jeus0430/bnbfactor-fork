@@ -11,9 +11,9 @@ import "./style.scss"
 
 const Home = ({ currency, walletAddress }) => {
   const [deposited, setDeposited] = useState(0)
-  const contract = getContractWithoutSigner();
 
   useEffect(() => {
+    const contract = getContractWithoutSigner();
     contract.totalInvested().then(
       (val) => {
         setDeposited(val.toString() / Math.pow(10, 18))

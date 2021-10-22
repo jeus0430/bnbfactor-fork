@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import { connect } from 'react-redux';
 import Home from "containers/home"
-import { connectWallet, getProvider } from "helpers/wallet"
+import { connectWallet } from "helpers/wallet"
 import Dashboard from "containers/dashboard"
 import { changeNetwork, changeWalletAction, changeCurrency } from "reducers/actions"
 import { useEffect } from "react";
@@ -20,15 +20,11 @@ const AppRouter = ({ changeReduxWallet, changeReduxNetwork, changeReduxCurrency 
 
   useEffect(() => {
     if (window.ethereum) {
-      window.ethereum.enable();
-
-      window.ethereum.on('accountsChanged', function (accounts) {
-        console.log(1);
+      window.ethereum.on('accountsChanged', (accounts) => {
         changeReduxWallet(accounts[0])
       });
 
-      window.ethereum.on('networkChanged', function (networkId) {
-        console.log(2);
+      window.ethereum.on('chainChanged ', (networkId) => {
         changeReduxNetwork(networkId)
       });
 
@@ -39,7 +35,7 @@ const AppRouter = ({ changeReduxWallet, changeReduxNetwork, changeReduxCurrency 
     } else {
       console.log('No Web3 Detected')
     }
-  }, [window.ethereum])
+  })
 
   useEffect(() => {
     axios.get('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd').then((val) => {
