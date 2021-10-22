@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom"
+import { connect } from 'react-redux';
 import "./style.scss"
 import logo from "../../resources/img/logo.png"
 
-const Header = () => {
+const Header = ({ walletAddress }) => {
   return (
     <header className="header">
       <Link to="/">
@@ -10,9 +11,16 @@ const Header = () => {
         <span>BNBFactor</span>
       </Link>
 
-      <span>0x3506...c2f6</span>
+
+      <span>{walletAddress.substr(0, 6) + '...' + walletAddress.substr(walletAddress.length - 4)}</span>
     </header>
   )
 }
 
-export default Header
+const mapStateToProps = (state) => {
+  return {
+    walletAddress: state.walletAddress,
+  }
+}
+
+export default connect(mapStateToProps)(Header)

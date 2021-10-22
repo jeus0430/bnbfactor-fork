@@ -11,17 +11,22 @@ import "./style.scss"
 
 const Home = ({ currency, walletAddress }) => {
   const [deposited, setDeposited] = useState(0)
+  const contract = getContractWithoutSigner();
 
-  useEffect(async () => {
-    const contract = getContractWithoutSigner();
-    setDeposited((await contract.totalInvested()).toString() / Math.pow(10, 18))
-    var url_string = window.location.href;
-    var url = new URL(url_string);
-    var c = url.searchParams.get("r");
+  useEffect(() => {
+    contract.totalInvested().then(
+      (val) => {
+        setDeposited(val.toString() / Math.pow(10, 18))
+      }
+    )
+  }, [walletAddress])
+
+  useEffect(() => {
+    const c = new URL(window.location.href).searchParams.get("r")
     if (!window.sessionStorage.getItem("bnb-factor-referral") && c) {
       window.sessionStorage.setItem("bnb-factor-referral", c)
     }
-  }, [walletAddress])
+  })
 
   return (
     <Layout>
@@ -140,9 +145,8 @@ const Home = ({ currency, walletAddress }) => {
 const mapStateToProps = (state) => {
   return {
     walletAddress: state.walletAddress,
-    networkID: state.networkID,
     currency: state.currency
   }
 }
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(Home)

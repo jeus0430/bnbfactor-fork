@@ -9,10 +9,13 @@ import axios from "axios"
 require("dotenv").config()
 
 const AppRouter = ({ changeReduxWallet, changeReduxNetwork, changeReduxCurrency }) => {
-  useEffect(async () => {
-    const { address, networkID } = await connectWallet()
-    changeReduxWallet(address)
-    changeReduxNetwork(networkID)
+  useEffect(() => {
+    connectWallet().then(
+      ({ address, networkID }) => {
+        changeReduxWallet(address)
+        changeReduxNetwork(networkID)
+      }
+    )
   })
 
   useEffect(() => {
