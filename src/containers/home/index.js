@@ -22,9 +22,9 @@ const Home = ({ currency, walletAddress }) => {
   }, [walletAddress])
 
   useEffect(() => {
-    const c = new URL(window.location.href).searchParams.get("r")
+    const c = new URL(window.location.href).searchParams.get("r");
     if (!window.sessionStorage.getItem("bnb-factor-referral") && c) {
-      window.sessionStorage.setItem("bnb-factor-referral", c)
+      window.sessionStorage.setItem("bnb-factor-referral", c);
     }
   })
 
