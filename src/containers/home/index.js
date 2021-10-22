@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { connect } from 'react-redux';
 import { Link } from "react-router-dom"
+import { connect } from 'react-redux';
 import Layout from "../../components/layout"
 import Ironclad from "../../resources/img/ironclad.svg"
 import Higharp from "../../resources/img/high-arp.svg"
@@ -8,17 +8,13 @@ import Customersupport from "../../resources/img/customer-support.svg"
 import { useEffect } from "react"
 import { getContractWithoutSigner } from "helpers/contract"
 import "./style.scss"
-import axios from "axios"
-import { changeWalletAction } from "reducers/actions"
 
-const Home = ({ walletAddress }) => {
+const Home = ({ currency, walletAddress }) => {
   const [deposited, setDeposited] = useState(0)
-  const [curren, setCurren] = useState(0)
 
   useEffect(async () => {
     const contract = getContractWithoutSigner();
     setDeposited((await contract.totalInvested()).toString() / Math.pow(10, 18))
-    setCurren((await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd'))['data']['binancecoin']['usd'])
     var url_string = window.location.href;
     var url = new URL(url_string);
     var c = url.searchParams.get("r");
@@ -26,27 +22,6 @@ const Home = ({ walletAddress }) => {
       window.sessionStorage.setItem("bnb-factor-referral", c)
     }
   }, [walletAddress])
-
-  useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.enable();
-
-      window.ethereum.on('accountsChanged', function (accounts) {
-        console.log('accountsChanges', accounts);
-      });
-
-      window.ethereum.on('networkChanged', function (networkId) {
-        console.log('networkChanged', networkId);
-      });
-
-      return () => {
-        // Remove event handlers attacted to window.ethereum
-        window.ethereum.removeAllListeners(['accountChanged', 'networkChanged'])
-      }
-    } else {
-      console.log('No Web3 Detected')
-    }
-  }, [window.ethereum])
 
   return (
     <Layout>
@@ -64,14 +39,14 @@ const Home = ({ walletAddress }) => {
                 Total Value Deposited
               </p>
               <p className="up-section-wells-one-value">{deposited.toFixed(3)}BNB</p>
-              <p className="up-section-wells-one-help">$ {deposited * curren}</p>
+              <p className="up-section-wells-one-help">$ {deposited * currency}</p>
             </div>
             <div className="up-section-wells-one">
               <p className="up-section-wells-one-title">
                 Total Referral Earnings
               </p>
               <p className="up-section-wells-one-value">{(deposited * 0.13).toFixed(3)} BNB</p>
-              <p className="up-section-wells-one-help">$ {(deposited * 0.13 * curren).toFixed(3)}</p>
+              <p className="up-section-wells-one-help">$ {(deposited * 0.13 * currency).toFixed(3)}</p>
             </div>
           </div>
           <div className="up-section-btns">
@@ -164,16 +139,10 @@ const Home = ({ walletAddress }) => {
 
 const mapStateToProps = (state) => {
   return {
-    walletAddress: state.walletAddress
+    walletAddress: state.walletAddress,
+    networkID: state.networkID,
+    currency: state.currency
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    changeWallet: (address) => {
-      dispatch(changeWalletAction(address))
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps)(Home);

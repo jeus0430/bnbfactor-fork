@@ -1,6 +1,8 @@
 const initialState = {
   walletAddress: "",
+  networkID: 0,
   modalOpen: false,
+  currency: 0
 }
 
 const reducer = (state = initialState, action) => {
@@ -9,6 +11,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         walletAddress: action.address,
+      }
+    case "NETWORK_CHANGE":
+      return {
+        ...state,
+        networkID: action.networkID
       }
     case "OPEN_MODAL":
       return {
@@ -19,6 +26,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         modalOpen: false,
+      }
+    case "CURRENY_CHANGE":
+      return {
+        ...state,
+        currency: action.currency
       }
     default:
       return {
