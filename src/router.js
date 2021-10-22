@@ -8,27 +8,29 @@ import { useEffect } from "react";
 import axios from "axios"
 require("dotenv").config()
 
-const AppRouter = ({ networkID, changeReduxWallet, changeReduxNetwork, changeReduxCurrency }) => {
-  useEffect(() => {
-    if (networkID != process.env.REACT_APP_CHAIN_ID) {
-      connectWallet()
-    }
-  }, [networkID])
+const AppRouter = ({ changeReduxWallet, changeReduxNetwork, changeReduxCurrency }) => {
+  useEffect(async () => {
+    const { address, networkID } = await connectWallet()
+    changeReduxWallet(address)
+    changeReduxNetwork(networkID)
+  })
 
   useEffect(() => {
     if (window.ethereum) {
       window.ethereum.enable();
 
       window.ethereum.on('accountsChanged', function (accounts) {
+        console.log(1);
         changeReduxWallet(accounts[0])
       });
 
       window.ethereum.on('networkChanged', function (networkId) {
+        console.log(2);
         changeReduxNetwork(networkId)
       });
 
+      // Remove event handlers attacted to window.ethereum
       return () => {
-        // Remove event handlers attacted to window.ethereum
         window.ethereum.removeAllListeners(['accountChanged', 'networkChanged'])
       }
     } else {
@@ -50,12 +52,6 @@ const AppRouter = ({ networkID, changeReduxWallet, changeReduxNetwork, changeRed
   </Router>
 }
 
-const mapStateToProps = (state) => {
-  return {
-    networkID: state.networkID
-  }
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
     changeReduxNetwork: (id) => dispatch(changeNetwork(id)),
@@ -64,4 +60,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppRouter)
+export default connect(null, mapDispatchToProps)(AppRouter)

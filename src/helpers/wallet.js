@@ -3,7 +3,6 @@ require("dotenv").config()
 
 export const connectWallet = async () => {
   const provider = await detectEthereumProvider()
-
   if (provider) {
     try {
       const walletChainId = await provider.request({
@@ -14,15 +13,16 @@ export const connectWallet = async () => {
         const addressArray = await provider.request({
           method: "eth_requestAccounts",
         })
-
         if (addressArray.length) {
           return {
             address: addressArray[0],
+            networkID: walletChainId,
             status: "Connected",
           }
         } else {
           return {
             address: "",
+            networkID: walletChainId,
             status: "No wallet connected",
           }
         }
@@ -34,12 +34,14 @@ export const connectWallet = async () => {
 
         return {
           address: "",
+          networkID: walletChainId,
           status: "Was on the other chain",
         }
       }
     } catch (err) {
       return {
         address: "",
+        networkID: 0,
         status: `😥 ${err.message}`,
       }
     }
@@ -48,6 +50,7 @@ export const connectWallet = async () => {
             browser.(https://metamask.io/download.html)`)
     return {
       address: "",
+      networkID: 0,
       status: "Can't find web3 provider",
     }
   }
