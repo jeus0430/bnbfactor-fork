@@ -14,11 +14,12 @@ const Home = ({ currency, walletAddress }) => {
 
   useEffect(() => {
     const contract = getContractWithoutSigner();
-    contract.totalInvested().then(
-      (val) => {
-        setDeposited(val.toString() / Math.pow(10, 18))
-      }
-    )
+    if (contract)
+      contract.totalInvested().then(
+        (val) => {
+          setDeposited(val.toString() / Math.pow(10, 18))
+        }
+      )
   }, [walletAddress])
 
   useEffect(() => {

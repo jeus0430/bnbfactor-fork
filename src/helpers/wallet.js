@@ -51,7 +51,7 @@ export const connectWallet = async () => {
     return {
       address: "",
       networkID: 0,
-      status: "Can't find web3 provider",
+      status: "ETHEREUM_NOT_FOUND",
     }
   }
 }

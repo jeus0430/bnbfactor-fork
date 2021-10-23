@@ -27,28 +27,20 @@ const Dashboard = ({ walletAddress, currency, modalOpen, closeModal }) => {
     },
   })
 
-  const updateBalance = (walletAddress) => {
-    web3.eth.getBalance(walletAddress).then(
-      (val) => {
-        setBalan(web3.utils.fromWei(val))
-      }
-    )
-  }
-
-  const updateAvailable = (walletAddress) => {
-    contract.getUserAvailable(walletAddress).then(
-      (val) => {
-        setAva(parseFloat(val.toString()) / Math.pow(10, 18))
-      }
-    )
-  }
-
   useEffect(() => {
     if (walletAddress) {
-      updateBalance(walletAddress)
-      updateAvailable(walletAddress)
+      web3.eth.getBalance(walletAddress).then(
+        (val) => {
+          setBalan(web3.utils.fromWei(val))
+        }
+      )
+      contract.getUserAvailable(walletAddress).then(
+        (val) => {
+          setAva(parseFloat(val.toString()) / Math.pow(10, 18))
+        }
+      )
     }
-  }, [walletAddress])
+  }, [walletAddress, contract, web3.utils, web3.eth])
 
   const doHarvest = async () => {
     contract.withdraw({
@@ -58,8 +50,16 @@ const Dashboard = ({ walletAddress, currency, modalOpen, closeModal }) => {
     }).then(
       () => {
         NotificationManager.success('Withdraw success')
-        updateBalance(walletAddress)
-        updateAvailable(walletAddress)
+        web3.eth.getBalance(walletAddress).then(
+          (val) => {
+            setBalan(web3.utils.fromWei(val))
+          }
+        )
+        contract.getUserAvailable(walletAddress).then(
+          (val) => {
+            setAva(parseFloat(val.toString()) / Math.pow(10, 18))
+          }
+        )
       },
       () => {
         NotificationManager.error('Withdraw failed')

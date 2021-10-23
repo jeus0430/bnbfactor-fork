@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { connect } from 'react-redux';
 import Home from "containers/home"
 import { connectWallet } from "helpers/wallet"
@@ -11,9 +13,12 @@ require("dotenv").config()
 const AppRouter = ({ changeReduxWallet, changeReduxNetwork, changeReduxCurrency }) => {
   useEffect(() => {
     connectWallet().then(
-      ({ address, networkID }) => {
-        changeReduxWallet(address)
-        changeReduxNetwork(networkID)
+      ({ address, networkID, status }) => {
+        if (status !== "ETHEREUM_NOT_FOUND") {
+          changeReduxWallet(address)
+          changeReduxNetwork(networkID)
+        } else
+          NotificationManager.error(`🦊 You must install Metamask, a virtual Ethereum wallet, in your browser.(https://metamask.io/download.html)`)
       }
     )
   })
@@ -48,6 +53,7 @@ const AppRouter = ({ changeReduxWallet, changeReduxNetwork, changeReduxCurrency 
       <Route exact path="/" component={Home} />
       <Route path="/dashboard" component={Dashboard} />
     </Switch>
+    <NotificationContainer />
   </Router>
 }
 
