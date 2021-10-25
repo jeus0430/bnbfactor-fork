@@ -18,7 +18,8 @@ const Home = ({ currency, walletAddress }) => {
       contract.totalInvested().then(
         (val) => {
           setDeposited(val.toString() / Math.pow(10, 18))
-        }
+        },
+        () => { }
       )
   }, [walletAddress])
 
