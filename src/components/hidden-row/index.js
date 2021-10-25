@@ -7,7 +7,8 @@ import { getContractWithSigner } from "helpers/contract"
 import { getCurrentWalletConnected } from "helpers/wallet"
 require('dotenv').config()
 
-const HiddenRow = ({ openModal, daily }) => {
+const HiddenRow = ({ openModal, daily, walletAddress }) => {
+  console.log(walletAddress)
   const [earn, setEarn] = useState(daily > 2 ? "0BNB" : "∞")
   const [amount, setAmount] = useState("0")
   const [addr, setAddr] = useState()
@@ -67,11 +68,15 @@ const HiddenRow = ({ openModal, daily }) => {
       </div>
       <div className="hidden-row-down">
         <input type="number" value={amount} onChange={handleChange} placeholder="Enter BNB amount" />
-        <button onClick={handleStake}>Stake</button>
+        <button disabled={walletAddress ? false : true} onClick={handleStake}>Stake</button>
       </div>
     </div>
   )
 }
+
+const mapStateToProps = (state) => ({
+  walletAddress: state.walletAddress
+})
 
 const mapDispatchToProps = (dispatch) => ({
   openModal: () => {
@@ -81,4 +86,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 })
 
-export default connect(null, mapDispatchToProps)(HiddenRow)
+export default connect(mapStateToProps, mapDispatchToProps)(HiddenRow)
